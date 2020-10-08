@@ -1,6 +1,5 @@
 package com.crud.kodillalibrary.domain.dto;
 
-import com.crud.kodillalibrary.domain.BookPiece;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -2,6 +2,7 @@ package com.crud.kodillalibrary.domain.dao;
 
 import com.crud.kodillalibrary.domain.BookPiece;
 import com.crud.kodillalibrary.domain.BookTitle;
+import com.crud.kodillalibrary.domain.Rental;
 import com.crud.kodillalibrary.domain.util.Status;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +26,9 @@ public class BookPieceDaoTestSuite {
     @Autowired
     private BookTitleDao bookTitleDao;
 
+    @Autowired
+    private RentalDao rentalDao;
+
     @Test
     public void testBookPieceDaoSave() {
         //Given
@@ -34,11 +39,82 @@ public class BookPieceDaoTestSuite {
 
         //Then
         int id = bookPiece.getPieceId();
-        Optional<BookPiece> requestedPiece = bookPieceDao.findById(id);
-        Assert.assertTrue(requestedPiece.isPresent());
+
+        try {
+            Optional<BookPiece> requestedPiece = bookPieceDao.findById(id);
+            Assert.assertTrue(requestedPiece.isPresent());
 
         //CleanUp
-        bookPieceDao.deleteById(id);
+        } finally {
+            bookPieceDao.deleteById(id);
+        }
+    }
+
+    @Test
+    public void testBookPieceDaoSave_WithRentals() {
+        //Given
+        Rental rental1 = new Rental(new Date(), new Date((new Date().getTime()) + 86400000 * 5));
+        Rental rental2 = new Rental(new Date(), new Date((new Date().getTime()) + 86400000 * 10));
+
+        BookPiece bookPiece1 = new BookPiece(Status.AVAILABLE);
+        BookPiece bookPiece2 = new BookPiece(Status.AVAILABLE);
+        BookPiece bookPiece3 = new BookPiece(Status.AVAILABLE);
+        BookPiece bookPiece4 = new BookPiece(Status.AVAILABLE);
+        BookPiece bookPiece5 = new BookPiece(Status.AVAILABLE);
+
+        Collections.addAll(rental1.getBookPieceList(), bookPiece1, bookPiece2);
+        Collections.addAll(rental2.getBookPieceList(), bookPiece3, bookPiece4, bookPiece5);
+
+        bookPiece1.getRentalList().add(rental1);
+        bookPiece2.getRentalList().add(rental1);
+        bookPiece3.getRentalList().add(rental2);
+        bookPiece4.getRentalList().add(rental2);
+        bookPiece5.getRentalList().add(rental2);
+
+
+        //When
+        bookPieceDao.save(bookPiece1);
+        bookPieceDao.save(bookPiece2);
+        bookPieceDao.save(bookPiece3);
+        bookPieceDao.save(bookPiece4);
+        bookPieceDao.save(bookPiece5);
+
+        int piece1Id = bookPiece1.getPieceId();
+        int piece2Id = bookPiece2.getPieceId();
+        int piece3Id = bookPiece3.getPieceId();
+        int piece4Id = bookPiece4.getPieceId();
+        int piece5Id = bookPiece5.getPieceId();
+
+        int rental1Id = rental1.getRentalId();
+        int rental2Id = rental2.getRentalId();
+
+        //Then
+        try {
+            Optional<BookPiece> piece1Retrieved = bookPieceDao.findById(piece1Id);
+            Optional<BookPiece> piece2Retrieved = bookPieceDao.findById(piece2Id);
+            Optional<BookPiece> piece3Retrieved = bookPieceDao.findById(piece3Id);
+            Optional<BookPiece> piece4Retrieved = bookPieceDao.findById(piece4Id);
+            Optional<BookPiece> piece5Retrieved = bookPieceDao.findById(piece5Id);
+
+            Assert.assertTrue(piece1Retrieved.isPresent());
+            Assert.assertTrue(piece2Retrieved.isPresent());
+            Assert.assertTrue(piece3Retrieved.isPresent());
+            Assert.assertTrue(piece4Retrieved.isPresent());
+            Assert.assertTrue(piece5Retrieved.isPresent());
+
+            Assert.assertEquals(1, piece1Retrieved.get().getRentalList().size());
+            Assert.assertEquals(rental1.getRentalId(), piece2Retrieved.get().getRentalList().get(0).getRentalId());
+
+        //CleanUp
+        } finally {
+            bookPieceDao.deleteById(piece1Id);
+            bookPieceDao.deleteById(piece2Id);
+            bookPieceDao.deleteById(piece3Id);
+            bookPieceDao.deleteById(piece4Id);
+            bookPieceDao.deleteById(piece5Id);
+            rentalDao.deleteById(rental1Id);
+            rentalDao.deleteById(rental2Id);
+        }
     }
 
     @Test
@@ -63,13 +139,6 @@ public class BookPieceDaoTestSuite {
                 bookPiece_Abomination1, bookPiece_Abomination2, bookPiece_Abomination3,
                 bookPiece_Abomination4, bookPiece_Abomination5, bookPiece_Abomination6);
 
-        //When
-//        bookPieceDao.save(bookPiece_Abomination1); //co zrobić, by zadziało save tylko egzemplarzy?
-//        bookPieceDao.save(bookPiece_Abomination2); //bez bookTitleDao.save(bookTitle_Abomination);
-//        bookPieceDao.save(bookPiece_Abomination3);
-//        bookPieceDao.save(bookPiece_Abomination4);
-//        bookPieceDao.save(bookPiece_Abomination5);
-//        bookPieceDao.save(bookPiece_Abomination6);
         bookTitleDao.save(bookTitle_Abomination);
 
         List<BookPiece> availablePieces = bookPieceDao.findBookPiecesByStatus(Status.AVAILABLE);
@@ -77,13 +146,16 @@ public class BookPieceDaoTestSuite {
         List<BookPiece> damagedPieces = bookPieceDao.findBookPiecesByStatus(Status.DAMAGED);
 
         //Then
-        Assert.assertEquals(3, availablePieces.size());
-        Assert.assertEquals(2, inCirculationPieces.size());
-        Assert.assertEquals(1, damagedPieces.size());
+        try {
+            Assert.assertEquals(3, availablePieces.size());
+            Assert.assertEquals(2, inCirculationPieces.size());
+            Assert.assertEquals(1, damagedPieces.size());
 
         //CleanUp
-        int titleId = bookTitle_Abomination.getBookId();
-        bookTitleDao.deleteById(titleId);
+        } finally {
+            int titleId = bookTitle_Abomination.getBookId();
+            bookTitleDao.deleteById(titleId);
+        }
     }
 
 }

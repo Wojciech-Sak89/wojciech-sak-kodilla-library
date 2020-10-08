@@ -42,4 +42,8 @@ public class Rental {
     public void setBorrowingReader(Reader borrowingReader) {
         this.borrowingReader = borrowingReader;
     }
+
+    public void setReturnDate(Date returnDate) {
+        this.returnDate = returnDate;
+    }
 }

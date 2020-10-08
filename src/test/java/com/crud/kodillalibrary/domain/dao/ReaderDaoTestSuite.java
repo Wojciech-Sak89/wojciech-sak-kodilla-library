@@ -32,11 +32,15 @@ public class ReaderDaoTestSuite {
 
         //Then
         int id = reader.getReaderId();
-        Optional<Reader> currentReader = readerDao.findById(id);
-        Assert.assertTrue(currentReader.isPresent());
+
+        try {
+            Optional<Reader> currentReader = readerDao.findById(id);
+            Assert.assertTrue(currentReader.isPresent());
 
         //CleanUp
-        readerDao.deleteById(id);
+        } finally {
+            readerDao.deleteById(id);
+        }
     }
 
     @Test
@@ -64,12 +68,15 @@ public class ReaderDaoTestSuite {
         int reader1Id = reader1.getReaderId();
         int reader2Id = reader2.getReaderId();
 
-        Assert.assertNotEquals(0, reader1Id);
-        Assert.assertNotEquals(0, reader2Id);
+        try {
+            Assert.assertNotEquals(0, reader1Id);
+            Assert.assertNotEquals(0, reader2Id);
 
         //CleanUp
-        readerDao.deleteById(reader1Id);
-        readerDao.deleteById(reader2Id);
+        } finally {
+            readerDao.deleteById(reader1Id);
+            readerDao.deleteById(reader2Id);
+        }
     }
 
 }

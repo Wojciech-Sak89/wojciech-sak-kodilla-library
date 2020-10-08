@@ -31,11 +31,18 @@ public class BookTitleDaoTestSuite {
 
         //Then
         int id = bookTitle.getBookId();
-        Optional<BookTitle> requestedTitle = bookTitleDao.findById(id);
-        Assert.assertTrue(requestedTitle.isPresent());
+
+        try {
+            Optional<BookTitle> requestedTitle = bookTitleDao.findById(id);
+            Assert.assertTrue(requestedTitle.isPresent());
 
         //CleanUp
-        bookTitleDao.deleteById(id);
+        } finally {
+            bookTitleDao.deleteById(id);
+        }
+
+
+
     }
 
     @Test
@@ -70,12 +77,51 @@ public class BookTitleDaoTestSuite {
         int id_Abomination = bookTitle_Abomination.getBookId();
         int id_Dracula = bookTitle_Dracula.getBookId();
 
-        Assert.assertNotEquals(0, id_Abomination);
-        Assert.assertNotEquals(0, id_Dracula);
+        try {
+            Assert.assertNotEquals(0, id_Abomination);
+            Assert.assertNotEquals(0, id_Dracula);
 
         //CleanUp
-        bookTitleDao.deleteById(id_Abomination);
-        bookTitleDao.deleteById(id_Dracula);
+        } finally {
+            bookTitleDao.deleteById(id_Abomination);
+            bookTitleDao.deleteById(id_Dracula);
+        }
+    }
+
+    @Test
+    public void testBookTitle_findByTitleAndAuthorName() {
+        //Given
+        BookTitle bookTitle_Abomination = new BookTitle("Abomination", "Dan Simmons", 2019);
+        BookTitle bookTitle_Dracula = new BookTitle("Dracula", "Bram Stoker", 1900);
+
+        bookTitleDao.save(bookTitle_Abomination);
+        bookTitleDao.save(bookTitle_Dracula);
+
+        int id_Abomination = bookTitle_Abomination.getBookId();
+        int id_Dracula = bookTitle_Dracula.getBookId();
+
+        //When
+        Optional<BookTitle> found_Abomination = bookTitleDao.findBookTitleByTitleAndAuthorName("Abomination", "Dan Simmons");
+        Optional<BookTitle> found_Dracula = bookTitleDao.findBookTitleByTitleAndAuthorName("Dracula", "Bram Stoker");
+
+        //Then
+        try {
+            Assert.assertTrue(found_Abomination.isPresent());
+            Assert.assertEquals("Abomination", found_Abomination.get().getTitle());
+            Assert.assertEquals("Dan Simmons", found_Abomination.get().getAuthorName());
+            Assert.assertEquals(2019, found_Abomination.get().getPublishmentYear());
+
+            Assert.assertTrue(found_Dracula.isPresent());
+            Assert.assertEquals("Dracula", found_Dracula.get().getTitle());
+            Assert.assertEquals("Bram Stoker", found_Dracula.get().getAuthorName());
+            Assert.assertEquals(1900, found_Dracula.get().getPublishmentYear());
+
+        //CleanUp
+        } finally {
+            bookTitleDao.deleteById(id_Abomination);
+            bookTitleDao.deleteById(id_Dracula);
+        }
+
     }
 
 }

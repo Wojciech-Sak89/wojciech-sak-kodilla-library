@@ -1,13 +1,10 @@
 package com.crud.kodillalibrary.mapper;
 
-import com.crud.kodillalibrary.controller.BookPieceNotFoundException;
 import com.crud.kodillalibrary.domain.BookPiece;
 import com.crud.kodillalibrary.domain.BookTitle;
 import com.crud.kodillalibrary.domain.Reader;
 import com.crud.kodillalibrary.domain.Rental;
 import com.crud.kodillalibrary.domain.dao.BookPieceDao;
-import com.crud.kodillalibrary.domain.dao.BookTitleDao;
-import com.crud.kodillalibrary.domain.dao.ReaderDao;
 import com.crud.kodillalibrary.domain.dao.RentalDao;
 import com.crud.kodillalibrary.domain.dto.BookPieceDto;
 import com.crud.kodillalibrary.domain.dto.BookTitleDto;
@@ -16,7 +13,6 @@ import com.crud.kodillalibrary.domain.dto.RentalDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

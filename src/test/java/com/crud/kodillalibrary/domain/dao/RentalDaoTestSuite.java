@@ -30,11 +30,15 @@ public class RentalDaoTestSuite {
 
         //Then
         int id = rental.getRentalId();
-        Optional<Rental> currentRental = rentalDao.findById(id);
-        Assert.assertTrue(currentRental.isPresent());
+
+        try {
+            Optional<Rental> currentRental = rentalDao.findById(id);
+            Assert.assertTrue(currentRental.isPresent());
 
         //CleanUp
-        rentalDao.deleteById(id);
+        } finally {
+            rentalDao.deleteById(id);
+        }
     }
 
     @Test
@@ -66,15 +70,19 @@ public class RentalDaoTestSuite {
         //Then
         int rental1Id = rental1.getRentalId();
         int rental2Id = rental2.getRentalId();
-        Optional<Rental> rental1Retrieved = rentalDao.findById(rental1Id);
-        Optional<Rental> rental2Retrieved = rentalDao.findById(rental2Id);
 
-       Assert.assertEquals(2, rental1Retrieved.get().getBookPieceList().size());
-       Assert.assertEquals(3, rental2Retrieved.get().getBookPieceList().size());
+        try {
+            Optional<Rental> rental1Retrieved = rentalDao.findById(rental1Id);
+            Optional<Rental> rental2Retrieved = rentalDao.findById(rental2Id);
+
+            Assert.assertEquals(2, rental1Retrieved.get().getBookPieceList().size());
+            Assert.assertEquals(3, rental2Retrieved.get().getBookPieceList().size());
 
         //CleanUp
-        rentalDao.deleteById(rental1Id);
-        rentalDao.deleteById(rental2Id);
+        } finally {
+            rentalDao.deleteById(rental1Id);
+            rentalDao.deleteById(rental2Id);
+        }
     }
 
 }

@@ -27,7 +27,7 @@ public class BookPiece {
     @Column(name = "STATUS")
     private Status status;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(
             name = "JOIN_RENTAL_BOOKPIECE",
             joinColumns = {@JoinColumn(name = "PIECE_ID", referencedColumnName = "PIECE_ID")},
@@ -39,7 +39,13 @@ public class BookPiece {
         this.status = status;
     }
 
+
+
     public void setBookTitle(BookTitle bookTitle) {
         this.bookTitle = bookTitle;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
