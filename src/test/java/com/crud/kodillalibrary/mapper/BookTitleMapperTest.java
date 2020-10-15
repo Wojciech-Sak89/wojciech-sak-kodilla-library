@@ -2,10 +2,10 @@ package com.crud.kodillalibrary.mapper;
 
 import com.crud.kodillalibrary.domain.BookPiece;
 import com.crud.kodillalibrary.domain.BookTitle;
-import com.crud.kodillalibrary.domain.dao.BookPieceDao;
-import com.crud.kodillalibrary.domain.dao.BookTitleDao;
+import com.crud.kodillalibrary.dao.BookPieceDao;
+import com.crud.kodillalibrary.dao.BookTitleDao;
 import com.crud.kodillalibrary.domain.dto.BookTitleDto;
-import com.crud.kodillalibrary.domain.util.Status;
+import com.crud.kodillalibrary.util.Status;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

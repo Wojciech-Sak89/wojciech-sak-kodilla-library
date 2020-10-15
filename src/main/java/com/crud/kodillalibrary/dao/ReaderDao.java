@@ -1,4 +1,4 @@
-package com.crud.kodillalibrary.domain.dao;
+package com.crud.kodillalibrary.dao;
 
 import com.crud.kodillalibrary.domain.Reader;
 import org.springframework.data.repository.CrudRepository;

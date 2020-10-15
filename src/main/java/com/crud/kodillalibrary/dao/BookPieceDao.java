@@ -1,7 +1,7 @@
-package com.crud.kodillalibrary.domain.dao;
+package com.crud.kodillalibrary.dao;
 
 import com.crud.kodillalibrary.domain.BookPiece;
-import com.crud.kodillalibrary.domain.util.Status;
+import com.crud.kodillalibrary.util.Status;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

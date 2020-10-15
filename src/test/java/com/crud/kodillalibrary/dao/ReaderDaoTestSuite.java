@@ -1,10 +1,7 @@
-package com.crud.kodillalibrary.domain.dao;
+package com.crud.kodillalibrary.dao;
 
-import com.crud.kodillalibrary.domain.BookPiece;
-import com.crud.kodillalibrary.domain.BookTitle;
 import com.crud.kodillalibrary.domain.Reader;
 import com.crud.kodillalibrary.domain.Rental;
-import com.crud.kodillalibrary.domain.util.Status;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

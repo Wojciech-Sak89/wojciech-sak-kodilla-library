@@ -2,7 +2,7 @@ package com.crud.kodillalibrary.mapper;
 
 import com.crud.kodillalibrary.domain.Reader;
 import com.crud.kodillalibrary.domain.Rental;
-import com.crud.kodillalibrary.domain.dao.RentalDao;
+import com.crud.kodillalibrary.dao.RentalDao;
 import com.crud.kodillalibrary.domain.dto.ReaderDto;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

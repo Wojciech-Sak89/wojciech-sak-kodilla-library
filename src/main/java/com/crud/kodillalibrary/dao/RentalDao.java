@@ -1,4 +1,4 @@
-package com.crud.kodillalibrary.domain.dao;
+package com.crud.kodillalibrary.dao;
 
 import com.crud.kodillalibrary.domain.Rental;
 import org.springframework.data.repository.CrudRepository;
@@ -9,5 +9,4 @@ import javax.transaction.Transactional;
 @Transactional
 @Repository
 public interface RentalDao extends CrudRepository<Rental, Integer> {
-
 }

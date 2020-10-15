@@ -1,6 +1,6 @@
 package com.crud.kodillalibrary.domain;
 
-import com.crud.kodillalibrary.domain.util.Status;
+import com.crud.kodillalibrary.util.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
